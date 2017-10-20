@@ -16,9 +16,9 @@ Pseudocode
 
 1. download files from web based on (year, month)
 2. convert word or pdf to something readable (csv/xml)
-3. based on further row/column specification, extract key datapoints form table 
-4. emit key data as  ```variable_name-frequency-date-value``` dictionaries
-5. same result as json
+3. extract cells form table 
+4. emit data as  ```variable_name-frequency-date-value``` dictionaries
+
 
 Platform
 ========
