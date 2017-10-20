@@ -27,33 +27,33 @@ Best case: the solution works on Windows and Linux.
 
 Second best: there two solutions, one on Windows works the same as on Linux. 
 
-  
+ 
 Output
 ======
 	
-From table:	
+- must emit cells by row 
+- each cell is name-frequency-date-value dictionary
+	
+Requirement
+===========
 
-  - must emit cells by row 
-  - emit name-frequency-date-value dictionaries
-	
-	
+<https://github.com/mini-kep/parser-rosstat-isep/blob/master/todo.py>
+
+
 Some approaches
 ===============
 
-Parse pdf
----------
+A. Parse pdf
+------------
 
 - ```pip install pdfminer.six```
 - ```python D:\Continuum\Anaconda3\Scripts\pdf2txt.py -p 4 oper.pdf -t xml > oper.xml```
 - parse oper.xml next
 
-Parse word
-----------
+В. Parse word
+-------------
 
-- may use <https://github.com/mini-kep/parser-rosstat-kep/tree/master/src/word2csv>
+- on Windows may use <https://github.com/mini-kep/parser-rosstat-kep/tree/master/src/word2csv>
 
-References
-==========
-
-Tech stack for parsing word at <https://gist.github.com/epogrebnyak/252e5b568d58b7e9c635c2723d81c850>
+- tech stack for parsing word at <https://gist.github.com/epogrebnyak/252e5b568d58b7e9c635c2723d81c850>
 
