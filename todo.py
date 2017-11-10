@@ -1,10 +1,16 @@
 import subprocess
 import bs4
+import sys
 
 
 # todo: create xml file from doc
 def make_xml(source_file_doc):
-    return subprocess.run(["antiword", "-x", "db", source_file_doc],
+    if sys.platform == 'darwin':
+        path_to_binary = "./bin/mac/antiword"
+    else:
+        raise Exception("This operating system is not supported")
+    return subprocess.run([path_to_binary, "-m", "../UTF-8.txt",
+                           "-x", "db", source_file_doc],
                           stdout=subprocess.PIPE, check=True).stdout
 
 
@@ -21,8 +27,10 @@ def yield_rows_from_xml(xml_string):
                 row_elements.append(child.text.strip().replace('\n', ''))
         yield row_elements[:]
 
-source_file_doc = 'oper.doc'	
+source_file_doc = 'oper.doc'
 xml_string = make_xml(source_file_doc)
+with open('result.xml', mode='w+b') as xml_file:
+    xml_file.write(xml_string)
 gen = yield_rows_from_xml(xml_string)
 
 # todo: must pass tests
