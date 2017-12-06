@@ -57,3 +57,31 @@ A. Parse pdf
 
 - tech stack for parsing word at <https://gist.github.com/epogrebnyak/252e5b568d58b7e9c635c2723d81c850>
 
+
+Table columns
+=============
+
+First 4 data columns contain information of interest
+
+```
+"Август 2017г." - this is publication month, August, returns absolute values
+
+в % к августу 2016 г. - this is 'yoy' (year on year) rate of growth
+
+в % к июлю 2016 г. - this is 'rog' (rate of growth) change
+
+в % к январю-августу 2016 г. - this is 'ytd'  - y
+```
+
+We disregard following columns.
+
+Several rows contain data for different months other than August.
+
+Previous period from year start:
+- `Валовой внутренний продукт, млрд.рублей`
+- `Инвестиции в основной капитал, млрд.рублей` 
+
+One month behind:
+- `Внешнеторговый оборот, млрд.долларов США` and 2 subsequent lines
+
+
