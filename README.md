@@ -7,7 +7,7 @@ We need to do the fllowing:
 cell table structure 
 3. return several cell values as dictionaries with assigned variable name, date, frequency and value
 
-#### Example: line 3 in table
+#### Example: 
 
 
 Август 2017г. | В % к августу 2016 г. | В % к июлю 2017 г. |
