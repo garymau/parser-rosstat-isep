@@ -7,21 +7,28 @@ We need to do the fllowing:
 cell table structure 
 3. return several cell values as dictionaries with assigned variable name, date, frequency and value
 
-Example:
+#### Example: line 3 in table
+
 
 Август 2017г. | В % к августу 2016 г. | В % к июлю 2017 г. |
 --------------|-----------------------|--------------------|
-Валовой внутренний продукт, млрд.рублей | 41782,11) | 101,52) | 99,53) |
-Индекс промышленного производства4)     |           | 101,5  |102,0 | 101,9 | 
-Продукция сельского хозяйства, млрд.рублей | 712,6 | 104,7 | 149,1 |
+Валовой внутренний продукт, млрд.рублей | 41782,11) | 101,52) |       |
+Индекс промышленного производства4)     |           | 101,5   | 102,0 |
+Продукция сельского хозяйства, млрд.рублей | 712,6  | 104,7   | 149,1 |
 
-Third line should be returned as:
+Lines 1 - we still need this data, but they are for different dates and not a monthly frequency,
+must be treated as a special case. 
+
+Lines 2 and 3 should read as:
 
 ```python 
-[dict(name='AGROPROD_bln_rub', freq='m', date='2017-08', value=712.6),
- dict(name='AGROPROD_yoy', freq='m', date='2017-08', value=104.7),
- dict(name='AGROPROD_rog', freq='m', date='2017-08', value=149.1)
-]
+[
+    dict(name='INDPRO_yoy', freq='m', date='2017-08', value=101.5),
+    dict(name='INDPRO_rog', freq='m', date='2017-08', value=102.0), 
+    dict(name='AGROPROD_bln_rub', freq='m', date='2017-08', value=712.6),
+    dict(name='AGROPROD_yoy', freq='m', date='2017-08', value=104.7),
+    dict(name='AGROPROD_rog', freq='m', date='2017-08', value=149.1)
+    ]
 ```
 
 Table structure
@@ -74,7 +81,7 @@ Platform
 
 Best case: the solution works on Windows and Linux.
 
-Second best: there two solutions, one on Windows works the same as on Linux. 
+Second best: there two solutions, one on Windows and other one for Linux. 
 
 
 Some approaches
