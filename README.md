@@ -16,8 +16,8 @@ Header                                  | Август 2017г.         | В % к
 Индекс промышленного производства4)     |                       | 101,5                 | 102,0              |
 Продукция сельского хозяйства, млрд.рублей | 712,6              | 104,7                 | 149,1              |
 
-Lines 1 - we still need this data, but they are for different dates and not a monthly frequency,
-must be treated as a special case. 
+Lines 1 - we still need this data, but it is for date other than August, has comments and not a monthly frequency,
+so must be treated as a special case. 
 
 Lines 2 and 3 should read as:
 
@@ -71,10 +71,10 @@ Pseudocode
 ==========
 
 1. download files from web based on (year, month)
-2. convert word or pdf to something readable (csv/xml)
-3. extract cells form table 
-4. emit data as  ```variable_name-frequency-date-value``` dictionaries
-
+2. extract cells form table as list of lists (row elements)
+3. map narable names to row and column
+4. return list of ```name-freq-date-value``` dictionaries
+5. test list against reference values
 
 Platform
 ========
