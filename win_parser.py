@@ -31,5 +31,18 @@ def test_resulting_csv(csv_rows):
 
 
 if __name__ == '__main__':
-    csv_rows = yield_rows_from_csv(getcwd() + '\\data\\processed\\' + 'oper.csv')
-    test_resulting_csv(csv_rows)
+    
+    # pseudocode: 
+    # 1. locate doc file in the data/raw folder
+    doc_file_path = ''
+    # 2. get list of rows from csv
+    gen = list(extract_rows(doc_file_path))
+    # 3.  write generator to file 
+    csv_file_path = ''
+    save_to_csv = save_csv(csv_file_path, gen)
+    # 4. test result
+    test_result(gen)  
+    
+    
+    #csv_rows = yield_rows_from_csv(getcwd() + '\\data\\processed\\' + 'oper.csv')
+    #test_resulting_csv(csv_rows)

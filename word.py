@@ -1,16 +1,16 @@
-"""make_csv(data_folder) dumps data from tables in Word document to csv file.
+"""Reads data from tables in Word document. 
    Windows-only, requires MS Word installed.
-"""
 
-# More info on...
-#     API:
-#         https://msdn.microsoft.com/en-us/library/office/ff837519.aspx
-#     Examples:
-#         http://stackoverflow.com/questions/10366596/reading-table-contetnts-in-ms-word-file-using-python
+   API:
+      https://msdn.microsoft.com/en-us/library/office/ff837519.aspx
+   Examples:
+      http://stackoverflow.com/questions/10366596/reading-table-contetnts-in-ms-word-file-using-python
+
+"""
 
 import csv
 import os
-# import config
+
 
 ENCODING = 'utf8'
 
@@ -60,10 +60,13 @@ def open_doc(path, word):
         word.Documents.Open(path)
     except com_error as e:
         if e.excepinfo[5] == -2146823683:
-            print('\nCheck if word document document is not opened in word already\n')
+            print('\nEnsure word document document is not opened '
+                  'in word already\n')
         elif e.excepinfo[5] == -2146823114:
-            print('\nCheck path to doc file.\nIf the path you provided is relative,'
-                  ' pay attention to the fact that default directory is system32\n')
+            print('\nCheck path to doc file.\n'
+                  'If the path you provided is relative, '
+                  'pay attention to the fact that default directory '
+                  'is system32\n')
         raise e
     return word.ActiveDocument
 
@@ -227,11 +230,6 @@ def folder_to_csv(folder, csv_filename):
     return True
 
 
-def word2csv(year, month, force=False):
-    raw_folder = config.DataFolder(year, month).raw
-    interim_csv = config.LocalCSV(year, month).interim
-    if force or not os.path.exists(interim_csv):
-        folder_to_csv(folder=raw_folder, csv_filename=interim_csv)
     
 
 def yield_continuous_rows_to_csv(input_doc, output_csv):
