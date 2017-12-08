@@ -1,10 +1,11 @@
 Use case
 ========
 
-We need to download a publication as Word or PDF file from Rossat web site, parse 
-the table in Section 1 ("ОСНОВНЫЕ ЭКОНОМИЧЕСКИЕ И СОЦИАЛЬНЫЕ ПОКАЗАТЕЛИ") preserving 
-cell table structure and return several cell values as dictionaries with assigned 
-variable name, date, frequency and value.
+We need to do the fllowing:
+1. download a publication as Word or PDF file from Rossat web site
+2. parse the table in Section 1 (```"ОСНОВНЫЕ ЭКОНОМИЧЕСКИЕ И СОЦИАЛЬНЫЕ ПОКАЗАТЕЛИ"```) preserving 
+cell table structure 
+3. return several cell values as dictionaries with assigned variable name, date, frequency and value
 
 Example:
 
