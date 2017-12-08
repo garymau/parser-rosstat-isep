@@ -32,6 +32,19 @@ def test_resulting_csv(csv_rows):
 
 if __name__ == '__main__':
     
+    
+    # FIXME:
+    # - must use word.to_csv()
+    # - must be called outside this module    
+    
+    #def yield_continuous_rows_to_csv(input_doc, output_csv):
+    #    # yield_continuous_rows_to_csv(input_doc=os.getcwd() + '\\' + 'oper.doc', output_csv='oper.csv')
+    #    table_rows = list(yield_continious_rows(input_doc))
+    #    with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
+    #        spamwriter = csv.writer(csvfile, delimiter=' ')
+    #        for row in table_rows:
+    #            spamwriter.writerow(row)
+
     # pseudocode: 
     # 1. locate doc file in the data/raw folder
     doc_file_path = ''
