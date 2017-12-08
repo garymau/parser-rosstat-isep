@@ -9,8 +9,6 @@
 """
 
 import csv
-import os
-
 
 ENCODING = 'utf8'
 
@@ -118,7 +116,7 @@ def get_filtered_cell_value(table, i, j):
 def get_cell_value(table, i, j):
     try:
         return table.Cell(Row=i, Column=j).Range.Text
-    # ISSUE: which specific exceptions can it throw?
+    # FIXME: which specific exceptions can it throw?
     except Exception:
         return ""
 
@@ -155,7 +153,6 @@ def query_all_tables(path, func):
     """
     word = open_ms_word()
     doc = open_doc(path, word)
-    #import pdb; pdb.set_trace()
     total_tables = get_table_count(doc)
     for i, table in enumerate(doc.Tables):
         print("Reading table {} of {}...".format(i + 1, total_tables))
@@ -189,56 +186,6 @@ def to_csv(gen, csv_path):
         filewriter = csv.writer(csvfile, delimiter='\t', lineterminator='\n')
         for row in gen:
             filewriter.writerow(row)
-
-# -------------------------------------------------------------------------------
-#
-#    Folder-level batch job
-#
-# -------------------------------------------------------------------------------
-
-
-def yield_rows_from_many_files(file_list):
-    """Iterate by row over .doc files in *file_list* """
-    print("Starting reading .doc files...")
-    for p in file_list:
-        if os.path.exists(p):
-            print("File:", p)
-            for row in yield_continious_rows(p):
-                yield row
-        else:
-            print("File does not exist:", p)
-
-
-def dump_doc_files_to_csv(file_list, csv_path):
-    """Write tables from .doc in *file_list* into one *csv_path* file. """
-    folder_iter = yield_rows_from_many_files(file_list)
-    to_csv(folder_iter, csv_path)
-
-
-def make_file_list(folder):
-    files = ["tab.doc"] + ["tab{0:d}.doc".format(x) for x in range(1, 5)]
-    return [os.path.abspath(os.path.join(folder, fn)) for fn in files]
-
-
-def folder_to_csv(folder, csv_filename):
-    """Make single csv based on 5 .doc files in *folder*. """
-    print()
-    print("Folder:\n    ", folder)
-    file_list = make_file_list(folder)
-    dump_doc_files_to_csv(file_list, csv_filename)
-    print("Finished creating raw CSV file:", csv_filename)
-    return True
-
-
-    
-
-def yield_continuous_rows_to_csv(input_doc, output_csv):
-    # yield_continuous_rows_to_csv(input_doc=os.getcwd() + '\\' + 'oper.doc', output_csv='oper.csv')
-    table_rows = list(yield_continious_rows(input_doc))
-    with open(output_csv, 'w', newline='', encoding='utf-8') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=' ')
-        for row in table_rows:
-            spamwriter.writerow(row)
 
 
 if __name__ == "__main__":
