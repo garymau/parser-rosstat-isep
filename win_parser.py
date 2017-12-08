@@ -42,9 +42,3 @@ if __name__ == '__main__':
     # check
     assert gen[4] == expected_rows[0]
     # TODO: extract dictionaries
-    
-    
-    
-
-    
-    
