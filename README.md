@@ -1,10 +1,60 @@
-Data source
-===========
+Use case
+========
 
-First table page in ISEP publication. 
+We need to download a publication as Word or PDF file from Rossat web site, parse 
+the table in Section 1 ("ОСНОВНЫЕ ЭКОНОМИЧЕСКИЕ И СОЦИАЛЬНЫЕ ПОКАЗАТЕЛИ") preserving 
+cell table structure and return several cell values as dictionaries with assigned 
+variable name, date, frequency and value.
+
+Example:
+
+Part of the table reads
+
+Август 2017г. | В % к августу 2016 г. | В % к июлю 2017 г. |
+--------------|-----------------------|--------------------|
+Валовой внутренний продукт, млрд.рублей | 41782,11) | 101,52) | 99,53) |
+Индекс промышленного производства4)     |           | 101,5  |102,0 | 101,9 | 
+Продукция сельского хозяйства, млрд.рублей | 712,6 | 104,7 | 149,1 |
+
+Third line should returned as:
+
+```python 
+[dict(name='AGROPROD_bln_rub', freq='m', date='2017-08', value=712.6),
+ dict(name='AGROPROD_yoy', freq='m', date='2017-08', value=104.7),
+ dict(name='AGROPROD_rog', freq='m', date='2017-08', value=149.1)
+]
+```
+
+Table structure
+===============
+
+#### Columns
+
+1. First three data columns contain information of interest:
+- `"Август 2017г."` - this is publication month, August, returns absolute values
+- `в % к августу 2016 г.` - this is 'yoy' (year on year) rate of growth
+- `в % к июлю 2016 г.` - this is 'rog' (rate of growth) change
+
+2. We disregard the rest of data columns
+
+
+#### Rows
+
+Several rows contain data for different months other than August.
+
+1. Previous period from year start:
+- `Валовой внутренний продукт, млрд.рублей`
+- `Инвестиции в основной капитал, млрд.рублей` 
+
+2. One month behind:
+- `Внешнеторговый оборот, млрд.долларов США` and 2 subsequent lines
+
+
+Links
+=====
 
 Publication home: 
-	<http://www.gks.ru/wps/wcm/connect/rosstat_main/rosstat/ru/statistics/publications/catalog/doc_1140087276688>
+    <http://www.gks.ru/wps/wcm/connect/rosstat_main/rosstat/ru/statistics/publications/catalog/doc_1140087276688>
 	
 Local files for one month:
 
@@ -27,18 +77,6 @@ Best case: the solution works on Windows and Linux.
 
 Second best: there two solutions, one on Windows works the same as on Linux. 
 
- 
-Output
-======
-	
-- must emit cells by row 
-- each cell is name-frequency-date-value dictionary
-	
-Requirement
-===========
-
-<https://github.com/mini-kep/parser-rosstat-isep/blob/master/todo.py>
-
 
 Some approaches
 ===============
@@ -56,32 +94,3 @@ A. Parse pdf
 - on Windows may use <https://github.com/mini-kep/parser-rosstat-kep/tree/master/src/word2csv>
 
 - tech stack for parsing word at <https://gist.github.com/epogrebnyak/252e5b568d58b7e9c635c2723d81c850>
-
-
-Table columns
-=============
-
-First 4 data columns contain information of interest
-
-```
-"Август 2017г." - this is publication month, August, returns absolute values
-
-в % к августу 2016 г. - this is 'yoy' (year on year) rate of growth
-
-в % к июлю 2016 г. - this is 'rog' (rate of growth) change
-
-в % к январю-августу 2016 г. - this is 'ytd'  - y
-```
-
-We disregard following columns.
-
-Several rows contain data for different months other than August.
-
-Previous period from year start:
-- `Валовой внутренний продукт, млрд.рублей`
-- `Инвестиции в основной капитал, млрд.рублей` 
-
-One month behind:
-- `Внешнеторговый оборот, млрд.долларов США` and 2 subsequent lines
-
-
