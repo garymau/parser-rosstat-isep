@@ -181,11 +181,19 @@ def yield_continious_rows(path):
 
 
 def to_csv(gen, csv_path):
-    """Accept iterable of rows and write in to csv_path"""
+    """Accept iterable of rows and write to *csv_path*."""
     with open(csv_path, 'w', encoding=ENCODING) as csvfile:
         filewriter = csv.writer(csvfile, delimiter='\t', lineterminator='\n')
         for row in gen:
             filewriter.writerow(row)
+            
+            
+def from_csv(csv_path):
+    """Yield iterable of rows from *csv_path*."""
+    with open(csv_path, encoding=ENCODING) as csvfile:
+        filereader = csv.reader(csvfile, delimiter='\t', lineterminator='\n')
+        for row in filereader:
+            yield(row)            
 
 
 if __name__ == "__main__":
