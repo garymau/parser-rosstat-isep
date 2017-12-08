@@ -46,12 +46,24 @@ def close_ms_word(app):
 
 
 def open_doc(path, word):
+    """Opens doc file with win32com.client.
+
+    Args:
+        path: path to doc file.
+        word: win32com.client.Dispatch object
+
+    Yields:
+        list of lists (rows)
+    """
     from pywintypes import com_error
     try:
         word.Documents.Open(path)
     except com_error as e:
         if e.excepinfo[5] == -2146823683:
             print('\nCheck if word document document is not opened in word already\n')
+        elif e.excepinfo[5] == -2146823114:
+            print('\nCheck path to doc file.\nIf the path you provided is relative,'
+                  ' pay attention to the fact that default directory is system32\n')
         raise e
     return word.ActiveDocument
 
