@@ -172,12 +172,12 @@ def yield_continious_rows(path):
     for y in query_all_tables(path, func=row_iter):
         for row in y:
             yield row
-
-# -------------------------------------------------------------------------------
+            
+# -----------------------------------------------------------------------------
 #
 #    Write CSV
 #
-# -------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 def to_csv(gen, csv_path):
@@ -195,6 +195,19 @@ def from_csv(csv_path):
         for row in filereader:
             yield(row)            
 
-
+# -----------------------------------------------------------------------------
+#
+#    Interface
+#
+# -----------------------------------------------------------------------------
+            
+def doc2csv(doc_path,  csv_path):
+    # consume Path instances
+    doc_path, csv_path = str(doc_path), str(csv_path)
+    # get list of rows from csv
+    gen = yield_continious_rows(doc_path)
+    # write generator to file 
+    to_csv(gen, csv_path)
+            
 if __name__ == "__main__":
     pass
