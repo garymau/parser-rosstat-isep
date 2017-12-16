@@ -9,8 +9,7 @@ Use case
 
 1. download files from web based on (year, month)
 2. extract cells form table as list of lists (row elements)
-3. map selected cell values too dictionaries 
-4. return several cell values as dictionaries with keys
+3. map selected cell values to dictionaries with keys
    `name`, `freq`, `date` and `value`
 5. test dictionaries against reference values
 
