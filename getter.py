@@ -1,24 +1,18 @@
 """
-
-Intent is to download all doc files for ISEP publication into
-   data/year/month/ folder
+Download doc files from publication and convert tables to CSV.
    
-Url
-
-    Root:
-        http://www.gks.ru/bgd/free/B17_00/Main.htm
+Publication root:
+    http://www.gks.ru/bgd/free/B17_00/Main.htm
         
-    Sample:    
-        http://www.gks.ru/bgd/free/B17_00/IssWWW.exe/Stg/dk10/1-0.doc
-       
-
+Sample url:    
+    http://www.gks.ru/bgd/free/B17_00/IssWWW.exe/Stg/dk10/1-0.doc
 """
 
 import arrow    
 import requests
 from pathlib import Path
 
-from word import doc2csv
+from word import doc2csv, from_csv
 
 def download(url, path):
     path = str(path)
@@ -86,10 +80,11 @@ class DocFile:
 class InterimCSV:        
     def __init__(self, year: int, month: int, target: str):
         self.path = Folder(year, month).interim / f'{target}.csv'
-      
+    
+    def from_csv(self):
+        return from_csv(self.path)
         
 class File:
-
     # TODO: continure dictionary based on 2017 10 (Октябрь)
     #       we want to use the dict to locate filenames based on keys like 'main' or 'ip'
     filesystem_a = dict(
@@ -124,12 +119,16 @@ class File:
         self.target = target
         self.postfix = self.filesystem_a[target][0]
         self.doc = DocFile(year, month, self.postfix)
+        self.csv = InterimCSV(year, month, self.target)
         
     def download(self):
         self.doc.download()
         
     def to_csv(self):
         self.doc.to_csv(self.target)
+
+    def from_csv(self):
+        return list(self.csv.from_csv())
 
 
 # NOT TODO: filesystem_b based on 2017 09
@@ -161,7 +160,9 @@ def official_dates():
 
 if __name__ == "__main__":
     target = 'main' 
-    for y, m in official_dates():
+    #for y, m in official_dates():
+    if True:
+        y, m = 2017, 10 
         z = File(y, m, target)
         z.download()
         z.to_csv()
