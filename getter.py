@@ -1,5 +1,5 @@
 """
-Download doc files from publication and convert tables to CSV.
+Download .doc files from publication and convert tables to CSV.
    
 Publication root:
     http://www.gks.ru/bgd/free/B17_00/Main.htm
@@ -86,58 +86,58 @@ class InterimCSV:
 
 
 class File:
-    filesystem_a = dict(
+    stable_files=dict(
         main=('1-0', 'Основные экономические и социальные показатели'),
+        retail=('3-1', 'Розничная торговля'),
+        bop=('3-2', 'Внешняя торговля'),
+        pri=('4-0', 'Индекс цен и тарифов'),
+        cpi=('4-1', 'Потребительские цены'),
+        ppi=('4-2', 'Цены производителей'),
+        odue=('5-0', 'Просроченная кредиторская задолженность организаций'),
+        soc=('6-0', 'Уровень жизни населения'),
+        lab=('7-0', 'Занятость и безработица'),
+        dem=('8-0', 'Демография')
+)    
+    
+    section2_a = dict(
         ip=('2-1-0', 'Индекс промышленного производства'),
         mng=('2-1-1', 'Добыча полезных ископаемых'),
         mnf=('2-1-2', 'Обрабатывающие производства'),
-        pwr=('2-1-3', 'Обеспечение электрической энергией, газом и паром; кондиционирование воздуха'),
-        wat=('2-1-4', 'Водоснабжение; водоотведение, организация сбора и утилизации отходов, '
-                      'деятельность по ликвидации загрязнений'),
+        pwr=('2-1-3', 'Обеспечение электрической энергией, газом и паром;'
+                      'кондиционирование воздуха'),
+        wat=('2-1-4', 'Водоснабжение; водоотведение, организация сбора ' 
+                      'и утилизации отходов, деятельность по ликвидации '
+                      'загрязнений'),
         agro=('2-2-1', 'Сельское хозяйство'),
         wood=('2-2-2', 'Лесозаготовки'),
         constr=('2-3', 'Строительство'),
         trans=('2-4', 'Транспорт'),
-        retail=('3-1', 'Розничная торговля'),
-        bop=('3-2', 'Внешняя торговля'),
-        pri=('4-0', 'Индекс цен и тарифов'),
-        cpi=('4-1', 'Потребительские цены'),
-        ppi=('4-2', 'Цены производителей'),
-        odue=('5-0', 'Просроченная кредиторская задолженность организаций'),
-        soc=('6-0', 'Уровень жизни населения'),
-        lab=('7-0', 'Занятость и безработица'),
-        dem=('8-0', 'Демография'),
     )
-    filesystem_b = dict(
-        main=('1-0', 'Основные экономические и социальные показатели'),
+        
+    section2_b = dict(
         gdp=('2-1', 'Валовой внутренний продукт'),
         ip=('2-2-0', 'Индекс промышленного производства'),
         mng=('2-2-1', 'Добыча полезных ископаемых'),
         mnf=('2-2-2', 'Обрабатывающие производства'),
-        pwr=('2-2-3', 'Обеспечение электрической энергией, газом и паром; кондиционирование воздуха'),
-        wat=('2-2-4', 'Водоснабжение; водоотведение, организация сбора и утилизации отходов, '
-                      'деятельность по ликвидации загрязнений'),
+        pwr=('2-2-3', 'Обеспечение электрической энергией, газом и паром;'
+                      'кондиционирование воздуха'),
+        wat=('2-2-4', 'Водоснабжение; водоотведение, организация сбора ' 
+                      'и утилизации отходов, деятельность по ликвидации '
+                      'загрязнений'),
         agro=('2-3-1', 'Сельское хозяйство'),
         wood=('2-3-2', 'Лесозаготовки'),
         constr=('2-4', 'Строительство'),
         trans=('2-5', 'Транспорт'),
-        retail=('3-1', 'Розничная торговля'),
-        bop=('3-2', 'Внешняя торговля'),
-        pri=('4-0', 'Индекс цен и тарифов'),
-        cpi=('4-1', 'Потребительские цены'),
-        ppi=('4-2', 'Цены производителей'),
-        odue=('5-0', 'Просроченная кредиторская задолженность организаций'),
-        soc=('6-0', 'Уровень жизни населения'),
-        lab=('7-0', 'Занятость и безработица'),
-        dem=('8-0', 'Демография'),
     )
 
     def __init__(self, year: int, month: int, target: str):
         self.target = target
-        if month in [9, 8, 6, 5]:
-            self.postfix = self.filesystem_b[target][0]
+        if target in self.stable_files.keys():
+            self.postfix = self.stable_files[target][0]
+        elif month in [9, 8, 6, 5]:
+            self.postfix = self.section2_b[target][0]
         else:
-            self.postfix = self.filesystem_a[target][0]
+            self.postfix = self.section2_a[target][0]
         self.doc = DocFile(year, month, self.postfix)
         self.csv = InterimCSV(year, month, self.target)
         
@@ -150,29 +150,8 @@ class File:
     def from_csv(self):
         return list(self.csv.from_csv())
 
-
-# NOT TODO: filesystem_b based on 2017 09
-
-PARTS = ['1-0', 
-         '2-1', '2-1-0', '2-1-1', '2-1-2', '2-1-3', '2-1-4', 
-         '2-2-0', '2-2-1', '2-2-2', '2-2-3', '2-2-4', 
-         '2-3', '2-3-1', '2-3-2', 
-         '2-4', '2-5', 
-         '3-1', '3-2', 
-         '4-0', '4-1', '4-2', 
-         '5-0', '6-0', '7-0', '8-0']
-
-    
-def download_all(year, month):
-     pass
-
-def make_csv(year, month):
-    pass
-
-def extract(year, month):    
-    pass 
-
 def official_dates(): 
+    # QUESTION: how far back in time can we run?
     start = arrow.get(2016, 1, 1)
     end = arrow.get(2017, 10, 1)
     for r in arrow.Arrow.range('month', start, end):
@@ -180,20 +159,10 @@ def official_dates():
 
 if __name__ == "__main__":
     target = 'main' 
-    #for y, m in official_dates():
+#    for y, m in official_dates():
     if True:
         y, m = 2017, 10 
         z = File(y, m, target)
         z.download()
         z.to_csv()
-        print(y, m, target)
-    
-#    for y, m in official_dates():
-#        print(y, m)
-#        for postfix in PARTS:
-#            z = DocFile(y, m, postfix)
-#            z.download()
-#            print(y, m, postfix, z.size)
-           
-# QUESTION: how far back in time can we run?
-
+        print(y, m, target)    

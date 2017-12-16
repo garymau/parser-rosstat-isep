@@ -14,9 +14,7 @@ d2 = dict(
     name = 'AGROPROD'
 )
 
-
 rows = File(year, month, 'main').from_csv()
-
 
 # TODO: write pseudocode for mapper()
 def mapper(year, month, d):

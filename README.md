@@ -1,35 +1,19 @@
+Links
+=====
+
+Publication home: 
+    <http://www.gks.ru/wps/wcm/connect/rosstat_main/rosstat/ru/statistics/publications/catalog/doc_1140087276688>
+	
 Use case
 ========
 
-We need to do the fllowing:
-1. download a publication as Word or PDF file from Rossat web site
-2. parse the table in Section 1 (```"ОСНОВНЫЕ ЭКОНОМИЧЕСКИЕ И СОЦИАЛЬНЫЕ ПОКАЗАТЕЛИ"```) preserving 
-cell table structure 
-3. return several cell values as dictionaries with assigned variable name, date, frequency and value
+1. download files from web based on (year, month)
+2. extract cells form table as list of lists (row elements)
+3. map selected cell values too dictionaries 
+4. return several cell values as dictionaries with keys
+   `name`, `freq`, `date` and `value`
+5. test dictionaries against reference values
 
-#### Example: 
-
-
-Header                                  | Август 2017г.         | В % к августу 2016 г. | В % к июлю 2017 г. |
-----------------------------------------|-----------------------|-----------------------|--------------------|
-Валовой внутренний продукт, млрд.рублей | 41782,11)             | 101,52)               |                    |
-Индекс промышленного производства4)     |                       | 101,5                 | 102,0              |
-Продукция сельского хозяйства, млрд.рублей | 712,6              | 104,7                 | 149,1              |
-
-Lines 1 - we still need this data, but it is for date other than August, has comments and not a monthly frequency,
-so must be treated as a special case. 
-
-Lines 2 and 3 should read as:
-
-```python 
-[
-    dict(name='INDPRO_yoy', freq='m', date='2017-08', value=101.5),
-    dict(name='INDPRO_rog', freq='m', date='2017-08', value=102.0), 
-    dict(name='AGROPROD_bln_rub', freq='m', date='2017-08', value=712.6),
-    dict(name='AGROPROD_yoy', freq='m', date='2017-08', value=104.7),
-    dict(name='AGROPROD_rog', freq='m', date='2017-08', value=149.1)
-    ]
-```
 
 Table structure
 ===============
@@ -55,26 +39,33 @@ Several rows contain data for different months other than August.
 2. One month behind:
 - `Внешнеторговый оборот, млрд.долларов США` and 2 subsequent lines
 
+#### Example: 
 
-Links
-=====
 
-Publication home: 
-    <http://www.gks.ru/wps/wcm/connect/rosstat_main/rosstat/ru/statistics/publications/catalog/doc_1140087276688>
-	
-Local files for one month:
+Table in Section 1 (```"ОСНОВНЫЕ ЭКОНОМИЧЕСКИЕ И СОЦИАЛЬНЫЕ ПОКАЗАТЕЛИ"```) preserving 
+cell table structure 
 
-  - [oper.doc](oper.doc) (one table in file)
-  - [oper.pdf](oper.pdf) (table at page 4)
-	
-Pseudocode
-==========
 
-1. download files from web based on (year, month)
-2. extract cells form table as list of lists (row elements)
-3. map narable names to row and column
-4. return list of ```name-freq-date-value``` dictionaries
-5. test list against reference values
+Header                                  | Август 2017г.         | В % к августу 2016 г. | В % к июлю 2017 г. |
+----------------------------------------|-----------------------|-----------------------|--------------------|
+Валовой внутренний продукт, млрд.рублей | 41782,11)             | 101,52)               |                    |
+Индекс промышленного производства4)     |                       | 101,5                 | 102,0              |
+Продукция сельского хозяйства, млрд.рублей | 712,6              | 104,7                 | 149,1              |
+
+Lines 1 - we still need this data, but it is for date other than August, has comments and not a monthly frequency,
+so must be treated as a special case. 
+
+Lines 2 and 3 should read as:
+
+```python 
+[
+    dict(name='INDPRO_yoy', freq='m', date='2017-08', value=101.5),
+    dict(name='INDPRO_rog', freq='m', date='2017-08', value=102.0), 
+    dict(name='AGROPROD_bln_rub', freq='m', date='2017-08', value=712.6),
+    dict(name='AGROPROD_yoy', freq='m', date='2017-08', value=104.7),
+    dict(name='AGROPROD_rog', freq='m', date='2017-08', value=149.1)
+    ]
+```
 
 Platform
 ========
@@ -83,9 +74,11 @@ Best case: the solution works on Windows and Linux.
 
 Second best: there two solutions, one on Windows and other one for Linux. 
 
+Current implementation: Windows + Word
 
-Some approaches
-===============
+
+Reference
+=========
 
 A. Parse pdf
 ------------
