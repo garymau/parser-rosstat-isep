@@ -14,6 +14,9 @@ from pathlib import Path
 
 from word import doc2csv, from_csv
 
+__all__ = ['download', 'url', 'Folder', 'DocFile',
+           'InterimCSV', 'File', 'official_dates']
+
 def download(url, path):
     path = str(path)
     r = requests.get(url.strip(), stream=True)
@@ -30,9 +33,7 @@ def url(year: int, month: int, pub: str):
             'B{}_00/'.format(last_digits) +            
             'IssWWW.exe/Stg/dk{}/'.format(month) + 
             '{}.doc'.format(pub))
-    
-assert url(2017, 10, '1-0') == ('http://www.gks.ru/bgd/free/B17_00/IssWWW.exe/'
-                                'Stg/dk10/1-0.doc') 
+
 
 class Folder:
     root = Path(__file__).parent
@@ -134,7 +135,7 @@ class File:
         self.target = target
         if target in self.stable_files.keys():
             self.postfix = self.stable_files[target][0]
-        elif month in [9, 8, 6, 5]:
+        elif month in [11, 9, 8, 6, 5, 3]:
             self.postfix = self.section2_b[target][0]
         else:
             self.postfix = self.section2_a[target][0]
@@ -161,7 +162,7 @@ if __name__ == "__main__":
     target = 'main' 
 #    for y, m in official_dates():
     if True:
-        y, m = 2017, 10 
+        y, m = 2017, 10
         z = File(y, m, target)
         z.download()
         z.to_csv()
